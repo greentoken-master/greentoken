@@ -1,0 +1,73 @@
+name: "🔧 Technical Task"
+description: "Track internal refactors, chores, and maintenance work"
+title: "[TASK]: "
+labels:
+  - task
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for internal technical tasks such as refactoring, performance work, dependency upgrades, and deployment/scripts maintenance.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Task Summary
+      description: A clear and concise description of the task
+      placeholder: Short summary of the technical task
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and Approach
+      description: What needs to be done and how you plan to do it
+      placeholder: Describe the main steps, affected modules, and planned changes
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected Area
+      description: Which part of the project is involved?
+      options:
+        - Frontend (Next.js)
+        - Smart Contracts (Soroban)
+        - Wallet Integration
+        - Tooling / Scripts
+        - CI / Infrastructure
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk Level
+      options:
+        - High (may impact production/testnet behavior)
+        - Medium (may impact multiple features)
+        - Low (localized or purely internal change)
+    validations:
+      required: true
+
+  - type: textarea
+    id: testing
+    attributes:
+      label: Testing Plan
+      description: How will you verify that this task is completed successfully?
+      placeholder: Describe unit tests, contract tests, and/or manual testing steps
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies and Blockers
+      description: Related issues, PRs, or external dependencies
+      placeholder: List any dependencies, migrations, or coordination needed
+
