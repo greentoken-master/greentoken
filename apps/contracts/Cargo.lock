@@ -260,6 +260,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2459377285ad874054d797f3ccebf984978aa39129f6eafde5cdc8315b612f8"
 
 [[package]]
+name = "cooperative_factory"
+version = "0.1.0"
+dependencies = [
+ "community_governance",
+ "energy-distribution",
+ "energy_token",
+ "soroban-sdk",
+ "stellar-access",
+]
+
+[[package]]
 name = "core-foundation-sys"
 version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1498,8 +1509,8 @@ dependencies = [
 
 [[package]]
 name = "stellar-macros"
-version = "0.5.1"
-source = "git+https://github.com/OpenZeppelin/stellar-contracts?tag=v0.5.1#372a162a6df8aed108befa5573d30a8ca49cb271"
+version = "0.8.0"
+source = "git+https://github.com/OpenZeppelin/stellar-contracts?tag=v0.8.0#ddc327eb92d63709436da3a8455f641c2d5476c5"
 dependencies = [
  "proc-macro2",
  "quote",
