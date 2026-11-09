@@ -8,16 +8,6 @@
 
 ---
 
-## Recognition
-
-| Award | Event |
-|-------|-------|
-| 🥇 **Featured Project** | [Stellar Buenos Aires Hackathon 2025](https://dorahacks.io/buidl/36793) |
-| 🏅 **Innovation Certificate** | Stellar Jury — Buenos Aires 2025 |
-| 🌍 **Selected** | [ClimateLaunchpad 2026](https://climatelaunchpad.org/) — world's largest green startup competition, powered by Climate-KIC & Chrysalis LEAP |
-
----
-
 ## The Problem
 
 Renewable energy cooperatives generate clean energy every day — but they can't prove it.
@@ -107,9 +97,20 @@ This is not a wrapper. Stellar is load-bearing infrastructure:
 | **Certificate issuance** | Mint SEP-41 tokens directly on Stellar Testnet |
 | **Certificate retirement** | On-chain burn, permanently auditable |
 | **Member allocation** | `energy_distribution` contract splits tokens by participation % |
-| **Governance** | `community_governance` contract for cooperative proposals |
+| **Governance** | `community_governance` contract for cooperative proposals and voting |
 | **Wallet auth** | Challenge-response signature verification (no gas, no tx) |
 | **Token standard** | SEP-41 (fungible) with OpenZeppelin Stellar Pausable + Upgradeable |
+
+### Smart Contracts
+
+Four contracts built with **OpenZeppelin Stellar Contracts v0.5.1** + **Soroban SDK 23.1.0**:
+
+| Contract | Purpose |
+|----------|---------|
+| `energy_token` | SEP-41 fungible token — 1 token = 1 kWh certified. Access control, pausable, upgradeable |
+| `energy_distribution` | Member allocation with multi-sig registration, percentage-based token distribution |
+| `community_governance` | DAO-style proposals with on-chain voting (for/against, double-vote prevention) |
+| `cooperative_factory` | Atomic deployment of all contracts per cooperative in a single transaction |
 
 ### Deployed Contracts — Stellar Testnet
 
@@ -118,8 +119,6 @@ This is not a wrapper. Stellar is load-bearing infrastructure:
 | `energy_token` | [`CCYOVOFD...MRPBA6`](https://stellar.expert/explorer/testnet/contract/CCYOVOFDJ5BVBSI6HADLWETTUF3BU423MEAWBSBWV2X5UVNKSJMRPBA6) | SEP-41 token — 1 token = 1 kWh certified |
 | `energy_distribution` | [`CBTDPLFN...NX2UDZ`](https://stellar.expert/explorer/testnet/contract/CBTDPLFNFGWVOD4HXDKW4EH5L3D2YGOY5CWTFCJM5TEWFL4VQTNX2UDZ) | Distributes certificates to members |
 | `community_governance` | [`CCH2EXXN...BJD6YI`](https://stellar.expert/explorer/testnet/contract/CCH2EXXNSDW2BAKBIPFAG6CCZS6LV4VJFUP2CZZCW5LEY4JOAXBJD6YI) | Cooperative on-chain governance |
-
-Built with **OpenZeppelin Stellar Contracts v0.5.1** + **Soroban SDK 23.1.0** — 65 tests passing.
 
 ---
 
@@ -131,12 +130,14 @@ Built with **OpenZeppelin Stellar Contracts v0.5.1** + **Soroban SDK 23.1.0** �
 | Smart Contracts | Rust + OpenZeppelin Stellar v0.5.1 |
 | Token Standard | SEP-41 fungible token |
 | Frontend | Next.js 16 + React 19 + TypeScript |
-| Styling | Tailwind CSS v4 + shadcn/ui |
-| Auth | Supabase + JWT + Stellar wallet signature |
+| Styling | Tailwind CSS v4 + shadcn/ui (55+ components) |
+| Auth | Supabase + JWT + Stellar wallet signature (SEP-0053) |
 | Wallet Support | Freighter, xBull, Lobstr (via Stellar Wallets Kit) |
-| Backend | Next.js API Routes + Supabase |
+| Backend | Next.js API Routes (30+ endpoints) + Supabase |
 | Deployment | Vercel |
 | Monorepo | Turborepo + pnpm |
+| i18n | Full ES/EN translation system (200+ keys) |
+| Security | CSP headers, rate limiting (Supabase-backed), audit logging, role-based access control |
 
 ---
 
@@ -148,13 +149,16 @@ green-token/
 │   ├── contracts/               # Soroban smart contracts (Rust)
 │   │   ├── energy_token/        # SEP-41 certificate token
 │   │   ├── energy_distribution/ # Member allocation logic
-│   │   └── community_governance/# DAO-style proposals
+│   │   ├── community_governance/# DAO-style proposals + voting
+│   │   └── cooperative_factory/ # Atomic multi-contract deployment
 │   └── web/                     # Next.js dashboard
-│       ├── app/                 # App Router pages
-│       ├── components/          # UI components
-│       └── lib/                 # Auth, wallet, Stellar utils
+│       ├── app/                 # App Router pages + API routes
+│       ├── components/          # UI components (shadcn/ui, shared, modals)
+│       ├── hooks/               # 16 custom React hooks
+│       └── lib/                 # Auth, wallet, Stellar utils, i18n, validation
 ├── packages/
 │   └── stellar/                 # Shared wallet & config utilities
+├── scripts/                     # DB setup, testnet simulation, smart meter mock
 └── tooling/
     └── issues/                  # GitHub issue templates
 ```
@@ -164,7 +168,7 @@ green-token/
 ## Quick Start
 
 ```bash
-git clone https://github.com/BuenDia-Builders/green-token.git
+git clone https://github.com/greentoken-master/greentoken.git
 cd green-token
 pnpm install
 pnpm dev
@@ -172,11 +176,18 @@ pnpm dev
 
 Frontend runs at `http://localhost:3000`.
 
+See [DEPLOYMENT.md](DEPLOYMENT.md) for full setup instructions including env vars, database, and contract deployment.
+
 **Build and test contracts:**
 ```bash
 cd apps/contracts
 stellar contract build
 cargo test
+```
+
+**Run web tests:**
+```bash
+pnpm test:api
 ```
 
 ---
@@ -207,6 +218,15 @@ GreenToken is designed to plug into Stellar's growing DeFi and payments ecosyste
 
 ---
 
+## Documentation
+
+- [API Reference](API.md) — All 30+ API endpoints documented
+- [Deployment Guide](DEPLOYMENT.md) — Local setup, contract deployment, production
+- [Contributing Guide](CONTRIBUTING.md) — Coding standards, commit conventions, PR process
+- [Changelog](CHANGELOG.md) — Version history
+
+---
+
 ## Contributing
 
 PRs welcome. Branch off `develop`, keep commits focused.
@@ -218,12 +238,10 @@ pnpm install && pnpm dev
 # Open PR to develop
 ```
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
+
 ---
 
 ## License
 
 Apache-2.0 — see [LICENSE](LICENSE)
-
----
-
-**Built on Stellar · BuenDia Builders 2026**
