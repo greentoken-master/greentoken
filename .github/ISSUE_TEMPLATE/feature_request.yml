@@ -1,0 +1,68 @@
+name: "✨ Feature Request"
+description: "Suggest a new feature or improvement for BeEnergy"
+title: "[FEAT]: "
+labels:
+  - feature
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in improving BeEnergy! Please provide as much detail as possible so we can properly evaluate your idea.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: A clear and concise description of the feature
+      placeholder: Short summary of the feature
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to Solve
+      description: What problem or pain point does this feature address?
+      placeholder: Describe the user or developer problem this feature solves
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: Describe the UX, API, or contract changes you are proposing
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: List any alternative approaches you have considered
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected Area
+      description: Which part of the project would this feature impact?
+      options:
+        - Frontend (Next.js)
+        - Smart Contracts (Soroban)
+        - Wallet Integration
+        - Tooling / Scripts
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any extra context, references, or mockups
+      placeholder: Links to designs, specs, or related issues/PRs
+
